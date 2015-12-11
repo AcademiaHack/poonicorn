@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Generator : MonoBehaviour {
+public class generator : MonoBehaviour {
     System.Random r = new System.Random();
 
     public GameObject enemy;
