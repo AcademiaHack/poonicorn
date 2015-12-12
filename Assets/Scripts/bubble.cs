@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class bubble : MonoBehaviour {
-
-    public float speed;
+public class Bubble : MonoBehaviour {
+	
+	GameStateScript state;
+	float speed;
 
 	// Use this for initialization
 	void Start () {
+		state = GameObject.Find ("GameState").GetComponent<GameStateScript> ();
+		speed = state.bubbleSpeed;
 	}
 	
 	// Update is called once per frame
