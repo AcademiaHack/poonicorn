@@ -4,26 +4,27 @@ using System.Collections;
 
 public class GameStateScript : MonoBehaviour {
 	
-	public float bubbleSpeedChange = 4f;
-
+	
 	public Text pointsLabel;
 	public Text pooLabel;
-
-	public float bubbleSpeed = -0.15f;
 
 	public int freePooLimit = 8;
 	public int defecateLimit = 3;
 
+	public float bubbleSpeed = -0.2f; //-0.15f;
 	public float bubbleSpawnerInterval = 1f;
 
 	float counter = 0.0f;
-	public float time;
-	float bubbleCounter = 0.0f;
+	float time;
 
+	float bubbleSpeedChange = 8f;
+	int lastBubbleSpeedChange = 0;
+	
 	Generator generator;
 
 	void Start () {
 		generator = GameObject.Find ("EnemySpawner").GetComponent<Generator> ();	
+		generator.ProgrameSpawner(bubbleSpawnerInterval);
 	}
 
 	void Update () {
@@ -32,18 +33,22 @@ public class GameStateScript : MonoBehaviour {
 
         pointsLabel.text = "Time: " + time +"s";
 
-		bubbleCounter += 1 * Time.deltaTime;
-
-		if ((Mathf.Round (bubbleCounter * 10.0f) / 10.0f) == bubbleSpawnerInterval) {
-			bubbleCounter = 0f;
-			Debug.Log ("SPAWN");
-			generator.GenerateBestSmellEver();
-		}
-
-		if ((time > bubbleSpeedChange && time % bubbleSpeedChange == 0) || time == bubbleSpeedChange) {
-			bubbleSpeed -= 0.01f;		
-			if (bubbleSpawnerInterval > 0) bubbleSpawnerInterval -= 0.1f;
-		}
+        Debug.Log(((int)time) + " -- " + bubbleSpeedChange);
+    	if ( lastBubbleSpeedChange != (int)time && ( 
+			((int)time > bubbleSpeedChange && (int)time % bubbleSpeedChange == 0) || 
+			(int)time == bubbleSpeedChange)
+		) {
+    		lastBubbleSpeedChange = (int)time;
+			Debug.Log("Multiplo");
+			bubbleSpeed -= 0.004f;		
+			if (bubbleSpawnerInterval > 0.01f) {
+				bubbleSpawnerInterval -= 0.04f;
+			} else {
+				bubbleSpawnerInterval = 0.01f;
+			}
+			Debug.Log(bubbleSpawnerInterval);
+			generator.ProgrameSpawner(bubbleSpawnerInterval);
+		}		
 	}
 
 	public void changePoo(int poo) {
